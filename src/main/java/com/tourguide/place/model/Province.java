@@ -9,18 +9,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@RequiredArgsConstructor
 @Getter
 @Setter
+@RequiredArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "country"}))
 public class Province extends BaseModel {
-    @Column(nullable = false)
+    @NotNull(message = "Name cannot be null")
     private String name;
 
     @Column

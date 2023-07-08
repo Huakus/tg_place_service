@@ -2,13 +2,9 @@ package com.tourguide.place.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class BaseDto {
     private String uuid;
     private LocalDateTime createdAt;
