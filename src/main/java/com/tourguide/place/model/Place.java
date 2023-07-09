@@ -18,6 +18,7 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "city_id"}))
 public class Place extends BaseModel {
     @NotNull(message = "Name cannot be null")
     private String name;

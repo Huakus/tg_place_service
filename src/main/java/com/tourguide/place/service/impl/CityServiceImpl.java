@@ -49,13 +49,13 @@ public class CityServiceImpl implements CityService {
     public CityResDto createCity(CityReqDto cityReqDto) {
         var city = modelMapper.map(cityReqDto, City.class);
         city.initialize();
-        setProvince(cityReqDto, city);
+        setProvince(city, cityReqDto.getProvinceUuid());
 
         try {
             cityRepository.save(city);
             return modelMapper.map(city, CityResDto.class);
         } catch (DataIntegrityViolationException exception) {
-            throw new AlreadyExistsException("City already exists", exception);
+            throw new InvalidDataException("City already exists", exception);
         }
     }
 
@@ -65,7 +65,7 @@ public class CityServiceImpl implements CityService {
             .orElseThrow(() -> new DoesntExistsException("City doesnt exists"));
 
         MappingUtil.copyNotNullProperties(cityReqDto, city);
-        setProvince(cityReqDto, city);
+        setProvince(city, cityReqDto.getProvinceUuid());
         city.setUpdatedAt(LocalDateTime.now());
 
         try {
@@ -84,9 +84,9 @@ public class CityServiceImpl implements CityService {
         cityRepository.delete(city);
     }
     
-    private void setProvince(CityReqDto cityReqDto, City city) {
-    var province = provinceRepository.findByUuid(cityReqDto.getProvinceUuid())
-        .orElseThrow(() -> new InvalidDataException("Invalid province_id"));
+    private void setProvince(City city, String provinceUuid) {
+    var province = provinceRepository.findByUuid(provinceUuid)
+        .orElseThrow(() -> new InvalidDataException("Invalid province_uuid"));
         
     city.setProvince(province);
     }
