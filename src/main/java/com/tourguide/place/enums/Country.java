@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum Country {
-    ITALY("italy");
+    ITALY("italy"),
+    ARGENTINA("argentina");
 
     @Getter
     private final String country;
