@@ -12,8 +12,10 @@ import com.tourguide.place.dto.request.CityReqDto;
 import com.tourguide.place.dto.response.CityResDto;
 import com.tourguide.place.exceptions.AlreadyExistsException;
 import com.tourguide.place.exceptions.DoesntExistsException;
+import com.tourguide.place.exceptions.InvalidDataException;
 import com.tourguide.place.model.City;
 import com.tourguide.place.repository.CityRepository;
+import com.tourguide.place.repository.ProvinceRepository;
 import com.tourguide.place.service.CityService;
 import com.tourguide.place.util.MappingUtil;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
     private final CityRepository cityRepository;
+    private final ProvinceRepository provinceRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -46,6 +49,7 @@ public class CityServiceImpl implements CityService {
     public CityResDto createCity(CityReqDto cityReqDto) {
         var city = modelMapper.map(cityReqDto, City.class);
         city.initialize();
+        setProvince(cityReqDto, city);
 
         try {
             cityRepository.save(city);
@@ -61,6 +65,7 @@ public class CityServiceImpl implements CityService {
             .orElseThrow(() -> new DoesntExistsException("City doesnt exists"));
 
         MappingUtil.copyNotNullProperties(cityReqDto, city);
+        setProvince(cityReqDto, city);
         city.setUpdatedAt(LocalDateTime.now());
 
         try {
@@ -79,4 +84,10 @@ public class CityServiceImpl implements CityService {
         cityRepository.delete(city);
     }
     
+    private void setProvince(CityReqDto cityReqDto, City city) {
+    var province = provinceRepository.findByUuid(cityReqDto.getProvinceUuid())
+        .orElseThrow(() -> new InvalidDataException("Invalid province_id"));
+        
+    city.setProvince(province);
+    }
 }

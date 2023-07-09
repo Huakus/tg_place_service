@@ -1,5 +1,7 @@
 package com.tourguide.place.dto.request;
 
+import com.tourguide.place.dto.BaseDto;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,10 +9,10 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class CityReqDto {
+public class CityReqDto extends BaseDto {
     private String name;
     private String description;
     private Double latitude;
     private Double longitude;
-    private ProvinceReqDto province;
+    private String provinceUuid;
 }
