@@ -1,6 +1,7 @@
 package com.tourguide.place.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -34,4 +35,11 @@ public class BaseModel {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void initialize() {
+        this.setUuid(UUID.randomUUID().toString());
+        var now = LocalDateTime.now();
+        this.setCreatedAt(now);
+        this.setUpdatedAt(now);
+    }
 }
