@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.tourguide.place.dto.request.ProvinceReqDto;
 import com.tourguide.place.dto.response.ProvinceResDto;
 import com.tourguide.place.exceptions.InvalidDataException;
+import com.tourguide.place.exceptions.AlreadyExistsException;
 import com.tourguide.place.exceptions.DoesntExistsException;
 import com.tourguide.place.model.Province;
 import com.tourguide.place.repository.ProvinceRepository;
@@ -50,7 +52,11 @@ public class ProvinceServiceImpl implements ProvinceService {
             var savedProvince = provinceRepository.save(newProvince);
             return modelMapper.map(savedProvince, ProvinceResDto.class);
         } catch (DataIntegrityViolationException exception) {
-            throw new InvalidDataException("Province already exists", exception);
+            if(exception.getCause().getClass().equals(ConstraintViolationException.class)) {
+                throw new AlreadyExistsException("Province already exists", exception);
+            }
+
+            throw exception;
         }
     }
 

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,11 @@ public class PlaceServiceImpl implements PlaceService {
             placeRepository.save(place);
             return modelMapper.map(place, PlaceResDto.class);
         } catch (DataIntegrityViolationException exception) {
-            throw new InvalidDataException("Place already exists", exception);
+            if(exception.getCause().getClass().equals(ConstraintViolationException.class)) {
+                throw new AlreadyExistsException("Place already exists", exception);
+            }
+
+            throw exception;
         }
     }
 

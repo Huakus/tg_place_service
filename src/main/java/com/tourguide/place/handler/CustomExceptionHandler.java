@@ -6,14 +6,20 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.tourguide.place.exceptions.InvalidDataException;
+import com.tourguide.place.exceptions.AlreadyExistsException;
 import com.tourguide.place.exceptions.DoesntExistsException;
 import com.tourguide.place.exceptions.NoChangesToApply;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
 
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<Object> handleAlreadyExistsException(AlreadyExistsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(InvalidDataException.class)
-    public ResponseEntity<Object> handleAlreadyExistsException(InvalidDataException ex) {
+    public ResponseEntity<Object> handleInvalidDataException(InvalidDataException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
