@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class CountryTest {
     @Test
     void testCountryValues() {
-        assertEquals("italy", Country.ITALY.getCountry());
-        assertEquals("argentina", Country.ARGENTINA.getCountry());
+        assertEquals("Italy", Country.ITALY.getCountry());
+        assertEquals("Argentina", Country.ARGENTINA.getCountry());
     }
 }
