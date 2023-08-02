@@ -7,8 +7,8 @@ on:
 
 env:
   PROJECT_ID: tourguide-393611
-  GKE_CLUSTER: your-cluster-name
-  GKE_ZONE: your-zone
+  GKE_CLUSTER: tg-kube-cluster
+  GKE_ZONE: europe-southwest1
   DEPLOYMENT_NAME: tg-place-service
   CONTAINER: gcr.io/tourguide-393611/tg_place_service
 
