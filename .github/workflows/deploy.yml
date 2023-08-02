@@ -3,12 +3,12 @@ name: Deploy to GKE
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   PROJECT_ID: tourguide-393611
-  GKE_CLUSTER: tg-kube-cluster
-  GKE_ZONE: europe-southwest1
+  GKE_CLUSTER: your-cluster-name
+  GKE_ZONE: your-zone
   DEPLOYMENT_NAME: tg-place-service
   CONTAINER: gcr.io/tourguide-393611/tg_place_service
 
@@ -17,15 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3 # Updated to use v3
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1 # Updated action for authentication
+      with:
+        credentials_json: ${{ secrets.GKE_SA_KEY }}
 
     - name: Setup Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ env.PROJECT_ID }}
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
-        export_default_credentials: true
-
+        install_components: kubectl # Add this line if kubectl is not already installed
 
     - name: Configure Docker to use the gcloud command-line tool as a credential helper
       run: gcloud --quiet auth configure-docker
