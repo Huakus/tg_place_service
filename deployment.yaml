@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tg-multimedia-service
+  name: tg-place-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tg-multimedia-service
+      app: tg-place-service
   template:
     metadata:
       labels:
-        app: tg-multimedia-service
+        app: tg-place-service
     spec:
       containers:
-      - name: tg-multimedia-service
+      - name: tg-place-service
         image: gcr.io/tourguide-393611/tg-place-service
         ports:
         - containerPort: 8011

@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tg-multimedia-service
+  name: tg-place-service
 spec:
   type: LoadBalancer
   ports:
   - port: 8011
     targetPort: 8011
   selector:
-    app: tg-multimedia-service
+    app: tg-place-service
