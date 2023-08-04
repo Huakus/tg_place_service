@@ -10,7 +10,7 @@ env:
   GKE_CLUSTER: tg-kube-cluster
   GKE_ZONE: europe-southwest1
   DEPLOYMENT_NAME: tg-place-service
-  CONTAINER: gcr.io/tourguide-393611/tg_place_service
+  CONTAINER: gcr.io/tourguide-393611/tg-place-service
 
 jobs:
   deploy:
