@@ -17,3 +17,10 @@ spec:
         image: gcr.io/tourguide-393611/tg-place-service
         ports:
         - containerPort: 8011
+        volumeMounts:               # Add this section
+        - name: place-config
+          mountPath: /config       # You can choose the path where you want to mount it
+      volumes:                      # Add this section
+      - name: place-config
+        configMap:
+          name: place-config
