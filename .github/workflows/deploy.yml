@@ -31,6 +31,10 @@ jobs:
         service_account_key: ${{ secrets.TOURGUIDE_GKE_GITHUB_DEPLOY_KEY }}
         install_components: kubectl # Add this line if kubectl is not already installed
 
+    - name: Configure kubectl
+      run: |
+        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
+
     - name: Create ConfigMaps if Not Exist
       run: |
         kubectl get configmap my-config-map || kubectl create configmap my-config-map --from-literal=SPRING_PROFILES_ACTIVE=prod
