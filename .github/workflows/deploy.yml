@@ -33,12 +33,15 @@ jobs:
     - name: Configure Docker to use the gcloud command-line tool as a credential helper
       run: gcloud --quiet auth configure-docker
 
+    - name: Connect kubectl to GKE
+      run: |
+        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
+
     - name: Create ConfigMaps if Not Exist
       run: |
         kubectl get configmap my-config-map || kubectl create configmap my-config-map --from-literal=SPRING_PROFILES_ACTIVE=prod
 
     - name: Deploy to GKE
       run: |
-        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }}
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
