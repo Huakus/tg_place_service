@@ -22,13 +22,17 @@ jobs:
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1 # Updated action for authentication
       with:
-        credentials_json: ${{ secrets.GKE_SA_KEY }}
+        credentials_json: ${{ secrets.TOURGUIDE_GKE_GITHUB_DEPLOY_KEY }}
 
     - name: Setup Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ env.PROJECT_ID }}
         install_components: kubectl # Add this line if kubectl is not already installed
+
+    - name: Create ConfigMaps if Not Exist
+      run: |
+        kubectl get configmap my-config-map || kubectl create configmap my-config-map --from-literal=SPRING_PROFILES_ACTIVE=prod
 
     - name: Configure Docker to use the gcloud command-line tool as a credential helper
       run: gcloud --quiet auth configure-docker
