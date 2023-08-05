@@ -39,7 +39,7 @@ jobs:
 
     - name: Create ConfigMaps if Not Exist
       run: |
-        kubectl get configmap my-config-map || kubectl create configmap my-config-map --from-literal=SPRING_PROFILES_ACTIVE=prod
+        kubectl get configmap place-config || kubectl create configmap place-config --from-literal=SPRING_PROFILES_ACTIVE=prod
 
     - name: Deploy to GKE
       run: |
